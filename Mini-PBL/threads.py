@@ -5,7 +5,7 @@ from random import randint
 sem0 = threading.Semaphore()
 sem1 = threading.Semaphore()
 sem2 = threading.Semaphore()
-sems = {sem0 : "sem0", sem1: "sem1", sem2: "sem2"}
+sems = {"sem0" : sem0, "sem1": sem1, "sem2": sem2}
 
 
 # class Sync(Thread):
@@ -30,16 +30,14 @@ class Manager(threading.Thread):
             file.close()
             print("Thread " + str(self.num) + " terminou de escrever no " + self.path);
         else:
-            print("Thread " + str(self.num) + " está lendo no " + self.path)
+            print("Thread " + str(self.num) + " está lendo no " + self.path + "\n")
             file = open(self.path, "r")
             line = file.read()
             print(line)
             file.close()
             print("Thread " + str(self.num) + " terminou de ler no " + self.path)
-        #thread = Sync()
-        #thread.start()
         correlate_semaphore.release()
         
-for thread_number in range (5):
+for thread_number in range (10):
     thread = Manager(randint(0,2), thread_number)
     thread.start()
