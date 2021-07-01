@@ -2,7 +2,10 @@ import threading
 import sys
 from random import randint
 
-sem = threading.Semaphore()
+sem0 = threading.Semaphore()
+sem1 = threading.Semaphore()
+sem2 = threading.Semaphore()
+sems = {sem0 : "sem0", sem1: "sem1", sem2: "sem2"}
 
 
 # class Sync(Thread):
@@ -13,11 +16,13 @@ class Manager(threading.Thread):
         print("Criando Thread n° " + str(num))
         threading.Thread.__init__(self)
         self.num = num
+        self.file_number = file_number
         self.path = f"arquivo{file_number}.txt"
     
     def run(self):
+        correlate_semaphore = sems[f"sem{self.file_number}"]
         a = randint(0,1)
-        sem.acquire()
+        correlate_semaphore.acquire()
         if a == 0:
             print("Thread " + str(self.num) + " está escrevendo no " + self.path)
             file = open(self.path,"a")
@@ -33,7 +38,7 @@ class Manager(threading.Thread):
             print("Thread " + str(self.num) + " terminou de ler no " + self.path)
         #thread = Sync()
         #thread.start()
-        sem.release()
+        correlate_semaphore.release()
         
 for thread_number in range (5):
     thread = Manager(randint(0,2), thread_number)
