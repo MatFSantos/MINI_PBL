@@ -80,3 +80,5 @@ while thread_number != 40:
         thread_number += 1
     else:
         Sync().start()
+        
+Sync.start()
