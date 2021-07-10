@@ -2,7 +2,6 @@ import threading
 from random import randint
 
 sem = threading.Semaphore()
-sem2 = threading.Semaphore()
 sincronizado = True
 buff = []
 
@@ -15,15 +14,14 @@ class Sync(threading.Thread):
     def run(self):
         sem.acquire()
         print("Arquivos estão sendo sincronizados...")
-        # recently_file = open(f"arquivo{}.txt","r")
-        # content = recently_file.read()
-        # recently_file.close()
+
         for i in range(3):
             file = open(f"arquivo{i}.txt", "a")
             for content in buff:
                 file.write(content)
             file.close()
         print("Arquivos sincronizados!")
+
         buff.clear()
         global sincronizado
         sincronizado = True
@@ -45,10 +43,6 @@ class Manager(threading.Thread):
             print("Thread " + str(self.num) + " está escrevendo no " + self.path)
 
             buff.append("Thread " + str(self.num) + " passou por aqui\n")
-
-            # file = open(self.path,"a")
-            # file.write("Thread " + str(self.file_number) + " passou por aqui")
-            # file.close()
 
             print("Thread " + str(self.num) + " terminou de escrever no " + self.path)
 
@@ -80,5 +74,3 @@ while thread_number != 40:
         thread_number += 1
     else:
         Sync().start()
-
-# Sync.start()
